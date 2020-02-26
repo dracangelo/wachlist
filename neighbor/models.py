@@ -1,17 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import User
-from PIL import Image
-
+import datetime as dt
 
 # Create your models here.
 
 
 class Profile(models.Model):
-    profile_photo = models.ImageField(upload_to = 'images/', blank=True)
+    avatar = models.ImageField(upload_to='images/', blank=True)
     contact = models.CharField(max_length=10)
     email = models.EmailField(max_length=70, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
     
+
     def save_profile(self):
         self.save()
 
@@ -38,35 +38,38 @@ class Profile(models.Model):
     class Meta:
         ordering = ['user']
 
-class Areacode(models.Model):
-    locality = models.CharField(max_length=30, default="e.g Metroplois, Gotham, Starcity etc")
+
+class Neighborhood(models.Model):
+    locality = models.CharField(
+        max_length=30, default="e.g Nairobi, Juja, Kiambu etc")
     name = models.CharField(max_length=30)
     occupants_count = models.IntegerField(default=0, blank=True)
-    user_profile = models.ForeignKey(User, on_delete=models.CASCADE, related_name='areas', blank=True)
+    user_profile = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='hoods', blank=True)
     date = models.DateTimeField(auto_now_add=True)
     
 
     @classmethod
-    def search_areacode_by_name(cls, search_term):
-        areacodes = cls.objects.filter(name__icontains=search_term)
-        return areacodes
+    def search_neighborhood_by_name(cls, search_term):
+        neighborhoods = cls.objects.filter(name__icontains=search_term)
+        return neighborhoods
 
     @classmethod
-    def one_areacode(cls, id):
-        areacode = Areacode.objects.filter(id=id)
-        return areacode
+    def one_neighborhood(cls, id):
+        neighborhood = Neighborhood.objects.filter(id=id)
+        return neighborhood
 
     @classmethod
-    def all_areacodes(cls):
-        areacodes = cls.objects.all()
-        return areacodes
+    def all_neighborhoods(cls):
+        neighborhoods = cls.objects.all()
+        return neighborhoods
 
 
 
     @classmethod
-    def get_areacode_by_id(cls, id):
-        areacode = Areacode.objects.filter(id=Areacode.id)
-        return areacode
+    def get_neighborhood_by_id(cls, id):
+        neighborhood = Neighborhood.objects.filter(id=Neighborhood.id)
+        return neighborhood
 
     @classmethod
     def get_all_profiles(cls):
@@ -76,10 +79,11 @@ class Areacode(models.Model):
 
 class Business(models.Model):
     name = models.CharField(max_length=30)
-    description = models.CharField(max_length=50, blank=True)
+    description = models.CharField(max_length=30)
     email = models.EmailField(max_length=70, blank=True)
     biz_owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    biz_area = models.ForeignKey(Areacode, on_delete=models.CASCADE, related_name='biz', null=True)
+    biz_hood = models.ForeignKey(
+        Neighborhood, on_delete=models.CASCADE, related_name='biz', null=True)
 
     
 
@@ -89,13 +93,13 @@ class Business(models.Model):
         return businesses
 
     @classmethod
-    def get_areacode_businesses(cls, areacode_id):
-        businesses = Business.objects.filter(areacode_id=id)
+    def get_neighborhood_businesses(cls, neighborhood_id):
+        businesses = Business.objects.filter(neighborhood_id=id)
         return businesses
 
     @classmethod
-    def get_area_biz(cls, biz_area):
-        businesses = Business.objects.filter(biz_area_pk=biz_area)
+    def get_hood_biz(cls, biz_hood):
+        businesses = Business.objects.filter(biz_hood_pk=biz_hood)
         return businesses
 
     @classmethod
@@ -106,10 +110,10 @@ class Business(models.Model):
 
 class Join(models.Model):
     '''
-    Updating user location each time they join or leave a neghborhood	
-    '''
+Updating user location each time they join or leave a neghborhood	
+'''
     user_id = models.OneToOneField(User)
-    area_id = models.ForeignKey(Areacode)
+    hood_id = models.ForeignKey(Neighborhood)
 
     def __str__(self):
         return self.user_id
@@ -120,7 +124,8 @@ class Post(models.Model):
     image = models.ImageField(upload_to='images/', blank=True)
     description = models.CharField(max_length=30)
     poster = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    post_area = models.ForeignKey(Areacode, on_delete=models.CASCADE, null=True)
+    post_hood = models.ForeignKey(
+        Neighborhood, on_delete=models.CASCADE, null=True)
     date = models.DateTimeField(auto_now_add=True)
 
     
@@ -131,8 +136,8 @@ class Post(models.Model):
         return posts
 
     @classmethod
-    def get_area_posts(cls, post_area):
-        posts = Post.objects.filter(post_area=id)
+    def get_hood_posts(cls, post_hood):
+        posts = Post.objects.filter(post_hood=id)
         return posts
 
     @classmethod

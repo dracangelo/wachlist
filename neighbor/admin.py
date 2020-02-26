@@ -3,5 +3,5 @@ from .models import *
 # Register your models here.
 
 admin.site.register(Profile)
-admin.site.register(Areacode)
 admin.site.register(Business)
+admin.site.register(Neighborhood)
