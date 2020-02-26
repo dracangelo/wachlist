@@ -31,3 +31,8 @@ class AddAreaForm(forms.ModelForm):
     class Meta:
         model = Areacode
         exclude = ['user_profile', 'profile']
+
+class AddBizForm(forms.ModelForm):
+    class Meta:
+        model = Business
+        exclude = ['biz_owner', 'biz_area']

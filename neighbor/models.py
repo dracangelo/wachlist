@@ -74,3 +74,33 @@ class Areacode(models.Model):
     def get_all_profiles(cls):
         profile = Profile.objects.all()
         return profile
+
+
+class Business(models.Model):
+    name = models.CharField(max_length=30)
+    description = models.CharField(max_length=50, blank=True)
+    email = models.EmailField(max_length=70, blank=True)
+    biz_owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    biz_area = models.ForeignKey(Areacode, on_delete=models.CASCADE, related_name='biz', null=True)
+
+    
+
+    @classmethod
+    def search_by_name(cls, search_term):
+        businesses = cls.objects.filter(name__icontains=search_term)
+        return businesses
+
+    @classmethod
+    def get_areacode_businesses(cls, areacode_id):
+        businesses = Business.objects.filter(areacode_id=id)
+        return businesses
+
+    @classmethod
+    def get_hood_biz(cls, biz_area):
+        businesses = Business.objects.filter(biz_area_pk=biz_area)
+        return businesses
+
+    @classmethod
+    def get_profile_businesses(cls, profile):
+        businesses = Business.objects.filter(biz_owner__pk=profile)
+        return businesses
