@@ -1,7 +1,7 @@
 {%extends 'base.html'%}
 {% block content %}
 {{ block.super}}
-{% load bootstrap4 %}
+{% load bootstrap3 %}
 {% load staticfiles%}
 
 
@@ -11,7 +11,7 @@
 {{form.media}}
 
 
-
+<div class="container">
 <div class="card mx-auto" style="max-width:50rem; margin-top:50px;">
   <form action="{%url 'add_biz'%}" method="post" enctype="multipart/form-data">
     {%csrf_token%}
@@ -20,8 +20,8 @@
     <input type="submit" class="btn btn-success btn-lg" value="Add Business">
   </form>
 </div>
+</div>
 {% block scripts %}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 {% bootstrap_javascript %}
 {% endblock %}
