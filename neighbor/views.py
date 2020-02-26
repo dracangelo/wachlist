@@ -51,3 +51,18 @@ def profile(request, username):
     businesses = Business.get_profile_businesses(profile.id)
     title = f'@{profile.username}'
     return render(request, 'profile.html', {'title': title, 'profile': profile, 'profile_info': profile_info, 'businesses': businesses})
+
+@login_required
+def add_area(request):
+    current_user = request.user
+    if request.method == 'POST':
+        form = AddAreaForm(request.POST, request.FILES)
+        if form.is_valid():
+            area = form.save(commit=False)
+            area.user_profile = current_user
+            area.save()
+        return redirect('homepage')
+
+    else:
+        form = AddAreaForm()
+    return render(request, 'add_area.html', {"form": form})

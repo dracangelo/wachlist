@@ -5,6 +5,7 @@ urlpatterns = [
     url(r'^$', views.home, name='homepage'),
     url(r'^update_profile/$', views.add_profile, name='update_profile'),
     url(r'^profile/$', views.profile, name='profile'),
+    url(r'^add_area/$', views.add_area, name='area'),
 
 ]
 
