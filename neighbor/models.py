@@ -39,36 +39,34 @@ class Profile(models.Model):
         ordering = ['user']
 
 class Areacode(models.Model):
-    locality = models.CharField(
-        max_length=30, default="e.g Metroplois, Gotham, Starcity etc")
+    locality = models.CharField(max_length=30, default="e.g Metroplois, Gotham, Starcity etc")
     name = models.CharField(max_length=30)
     occupants_count = models.IntegerField(default=0, blank=True)
-    user_profile = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='hoods', blank=True)
+    user_profile = models.ForeignKey(User, on_delete=models.CASCADE, related_name='areas', blank=True)
     date = models.DateTimeField(auto_now_add=True)
     
 
     @classmethod
-    def search_Areacode_by_name(cls, search_term):
-        Areacodes = cls.objects.filter(name__icontains=search_term)
-        return Areacodes
+    def search_areacode_by_name(cls, search_term):
+        areacodes = cls.objects.filter(name__icontains=search_term)
+        return areacodes
 
     @classmethod
-    def one_Areacode(cls, id):
-        Areacode = Areacode.objects.filter(id=id)
-        return Areacode
+    def one_areacode(cls, id):
+        areacode = Areacode.objects.filter(id=id)
+        return areacode
 
     @classmethod
-    def all_Areacodes(cls):
-        Areacodes = cls.objects.all()
-        return Areacodes
+    def all_areacodes(cls):
+        areacodes = cls.objects.all()
+        return areacodes
 
 
 
     @classmethod
-    def get_Areacode_by_id(cls, id):
-        Areacode = Areacode.objects.filter(id=Areacode.id)
-        return Areacode
+    def get_areacode_by_id(cls, id):
+        areacode = Areacode.objects.filter(id=Areacode.id)
+        return areacode
 
     @classmethod
     def get_all_profiles(cls):
@@ -96,7 +94,7 @@ class Business(models.Model):
         return businesses
 
     @classmethod
-    def get_hood_biz(cls, biz_area):
+    def get_area_biz(cls, biz_area):
         businesses = Business.objects.filter(biz_area_pk=biz_area)
         return businesses
 
@@ -104,3 +102,45 @@ class Business(models.Model):
     def get_profile_businesses(cls, profile):
         businesses = Business.objects.filter(biz_owner__pk=profile)
         return businesses
+
+
+class Join(models.Model):
+    '''
+    Updating user location each time they join or leave a neghborhood	
+    '''
+    user_id = models.OneToOneField(User)
+    area_id = models.ForeignKey(Areacode)
+
+    def __str__(self):
+        return self.user_id
+
+
+class Post(models.Model):
+    name = models.CharField(max_length=30)
+    image = models.ImageField(upload_to='images/', blank=True)
+    description = models.CharField(max_length=30)
+    poster = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    post_area = models.ForeignKey(Areacode, on_delete=models.CASCADE, null=True)
+    date = models.DateTimeField(auto_now_add=True)
+
+    
+
+    @classmethod
+    def search_post(cls, search_term):
+        posts = cls.objects.filter(name__icontains=search_term)
+        return posts
+
+    @classmethod
+    def get_area_posts(cls, post_area):
+        posts = Post.objects.filter(post_area=id)
+        return posts
+
+    @classmethod
+    def search_by_name(cls, search_term):
+        posts = cls.objects.filter(name__icontains=search_term)
+        return posts
+
+    @classmethod
+    def all_posts(cls,id):
+        posts = Post.objects.all()
+        return posts

@@ -1,1 +1,65 @@
-efgbsmshjsdjsdhsjhds
+{%extends 'base.html'%}
+{% load bootstrap3 %}
+{% block content %}
+{{ block.super}}
+{% load staticfiles %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link href="https://fonts.googleapis.com/css?family=K2D" rel="stylesheet">
+
+  <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+    crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Grand+Hotel" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <div class="container-fluid">
+    <h1 id="mainheading" style="text-align:center;" class="display-4"> Neighbourhood</h1>
+    <h4>Don't see your area ?
+      <!--Register it <a style="color:#4fc3f7;" href="{% url 'add_area'  %}">here</a>-->
+    </h4>
+    <div class="card-columns">
+      {% for area in areas%}
+
+      <div class="card border-secondary">
+
+
+        <div class="card-body" style="background-color:#eceff1;">
+
+
+          <h4 id="text" class="card-title">area: {{area.name }}</h4>
+          <h6 id="text" class="card-title">Location: {{area.locality | upper}}</h6>
+
+          <h5 id="text" class="card-title">Occupants: {{area.occupants_count | upper}}</h5>
+
+
+          <!--<a href="{% url 'join_area' area.id  %}" class="btn btn-sm btn-success">Join</a>-->
+        </div>
+      </div>
+      {% endfor %}
+
+    </div>
+
+
+
+
+
+
+  </div>
+</body>
+
+</html>
+
+{% endblock %}

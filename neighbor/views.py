@@ -13,20 +13,19 @@ from .forms import *
 def home(request):
     if request.user.is_authenticated:
         if Join.objects.filter(user_id=request.user).exists():
-            hood = Areacode.objects.get(pk=request.user.join.hood_id.id)
-            posts = Post.objects.filter(post_hood=request.user.join.hood_id.id)
-            businesses = Business.objects.filter(
-                biz_hood=request.user.join.hood_id.id)
-            return render(request, 'current_hood.html', {"hood": hood, "businesses": businesses, "posts": posts})
+            area = Areacode.objects.get(pk=request.user.join.area_id.id)
+            posts = Post.objects.filter(post_area=request.user.join.area_id.id)
+            businesses = Business.objects.filter(biz_area=request.user.join.area_id.id)
+            return render(request, 'current_area.html', {"area": area, "businesses": businesses, "posts": posts})
         else:
-            hoods = Areacode.all_areacodes()
-            return render(request, 'index.html', {"hoods": hoods})
+            areas = Areacode.all_areacodes()
+            return render(request, 'index.html', {"areas": areas})
     else:
-        hoods = Areacode.all_areacodes()
-        return render(request, 'index.html', {"hoods": hoods})
-    return render(request, 'index.html')
+        areas = Areacode.all_areacodes()
+        return render(request, 'index.html', {"areas": areas})
+    
 
-@login_required(login_url='/accounts/login/')
+@login_required
 def add_profile(request):
     current_user = request.user
     if request.method == 'POST':
