@@ -11,6 +11,19 @@ from .forms import *
 # Create your views here.
 
 def home(request):
+    if request.user.is_authenticated:
+        if Join.objects.filter(user_id=request.user).exists():
+            hood = Areacode.objects.get(pk=request.user.join.hood_id.id)
+            posts = Post.objects.filter(post_hood=request.user.join.hood_id.id)
+            businesses = Business.objects.filter(
+                biz_hood=request.user.join.hood_id.id)
+            return render(request, 'current_hood.html', {"hood": hood, "businesses": businesses, "posts": posts})
+        else:
+            hoods = Areacode.all_areacodes()
+            return render(request, 'index.html', {"hoods": hoods})
+    else:
+        hoods = Areacode.all_areacodes()
+        return render(request, 'index.html', {"hoods": hoods})
     return render(request, 'index.html')
 
 @login_required(login_url='/accounts/login/')
