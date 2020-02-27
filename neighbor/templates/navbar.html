@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  
+  <style>
+    body {margin:0;}
+    .navbar {
+      overflow: hidden;
+      background-color: #333;
+      position: fixed;
+      top: 0;
+      width: 100%;
+    }
+    .navbar a {
+      float: left;
+      display: block;
+      color: #f2f2f2;
+      text-align: center;
+      /* padding: 14px 16px; */
+      text-decoration: none;
+      font-size: 17px;
+    }
+    .navbar a:hover {
+      background: #ddd;
+      color: black;
+    }
+    .main {
+      padding: 16px;
+      margin-top: 30px;
+      height: 1500px; /* Used in this example to enable scrolling */
+    }
+    </style>
+</head>
+
+<body>
+
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar navbar-dark bg-dark">
+  <a class="navbar-brand" href="{% url 'homepage' %}">THE NEIGHBOURHOOD</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'homepage' %}">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'user_profile' username=user %}">My Profile</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/logout">logout</a>
+      </li>
+      
+    </ul>
+  </div>
+  <form class="form-inline my-2 my-lg-0" role="search" action="{% url 'search_results' %}">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search businesses . . ." aria-label="Search" name="business">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+</form>
+</nav>
+<br>
+<br>
+</body>
+
+</html>
