@@ -77,9 +77,7 @@ def add_biz(request):
 
 @login_required(login_url='/accounts/login/')
 def join_hood(request, hood_id):
-    '''
-    This view function will implement adding 
-    '''
+    
     neighborhood = Neighborhood.objects.get(pk=hood_id)
     if Join.objects.filter(user_id=request.user).exists():
 
@@ -93,9 +91,7 @@ def join_hood(request, hood_id):
 
 @login_required(login_url='/accounts/login/')
 def leave_hood(request, hood_id):
-    '''
-    This function will delete a neighbourhood instance in the join table
-    '''
+    
     if Join.objects.filter(user_id=request.user).exists():
         Join.objects.get(user_id=request.user).delete()
         return redirect('homepage')
